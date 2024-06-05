@@ -47,3 +47,8 @@ thread_2.demon = True
 thread_2.start()
 
 ```
+
+---
+## 시연 예시 영상
+https://youtu.be/one_-pS8Dh0?si=v9Rftw9DSf9UGrZX 
+
