@@ -4,13 +4,16 @@ import socket
 # ------------------ 서버 세팅 --------------------
 host = 'localhost'
 port = 55555
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind((host, port))
-server.listen()
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # 서버 TCP 소켓 생성
+server.bind((host, port))   #  소켓 주소 정보 할당(바인딩)
+server.listen() # 클라이언트 연결 수신 대기 상태
+#---------------------------------------------------
 
 clients = {}  # 접속한 클라이언트 목록 (ID: 소켓)
 rooms = {}  # 생성된 채팅방 목록 (룸 번호: 클라이언트 ID 리스트)
 
+
+# 클라이언트 관리하는 함수 
 def handle_client(client, addr):
     # 클라이언트가 접속하면 ID를 요청 
     client.send("ID를 입력하세요: ".encode())
@@ -137,9 +140,9 @@ def invite_client(client_id, invited_id):
 
 # 서버 시작 함수 
 def start_server():
-    print("서버가 시작되었습니다.")
+    print("서버가 시작되었습니다.") # 서버 시작을 알림
     while True:
-        client, addr = server.accept()
+        client, addr = server.accept()  # 클라이언트 연결 요청 수락
         thread = threading.Thread(target=handle_client, args=(client, addr))
         thread.start()
 

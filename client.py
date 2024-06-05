@@ -12,14 +12,10 @@ import threading
 # --------------------- 클라이언트 세팅 --------------------------
 host = 'localhost'
 port = 55555
-client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # 클라이언트 TCP 소켓 생성
+#-----------------------------------------------------------------
 
-try:
-    client.connect((host, port))
-except ConnectionRefusedError:
-    print("서버에 연결할 수 없습니다. 서버가 실행 중인지 확인하세요.")
-    exit()
-
+# 메시지 받는 함수
 def receive_messages():
     while True:
         try:
@@ -34,19 +30,27 @@ def receive_messages():
             print("연결에 오류가 발생했습니다:", e)
             client.close()
             break
-
+        
+# 메시지 보내는 함수 
 def send_messages():
     while True:
-        message = input()
-        if message == "!quit":
+        message = input() # 메시지를 입력
+        if message == "!quit": # !quit 을 입력하면 -> 클라이언트 소켓 종료
             client.send(message.encode())
             client.close()
             break
         else:
-            print(f"me: {message}")
+            print(f"me: {message}") 
             client.send(message.encode())
 
-receive_thread = threading.Thread(target=receive_messages)
+#---------------------------START----------------------------------
+try:
+    client.connect((host, port))    # 서버에 접속을 시도
+except ConnectionRefusedError:
+    print("서버에 연결할 수 없습니다. 서버가 실행 중인지 확인하세요.")
+    exit()
+    
+receive_thread = threading.Thread(target=receive_messages) 
 receive_thread.start()
 
 send_thread = threading.Thread(target=send_messages)
